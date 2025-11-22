@@ -4,18 +4,26 @@
 	import LoginForm from '$lib/components/login-form.svelte';
 	import MainApp from '$lib/components/main-app.svelte';
 
-	let usuario = $state<any>(null);
 	let isRestoring = $state(true);
-	
-	authStore.subscribe((u) => (usuario = u));
 
 	onMount(async () => {
+		console.log('Component mounted, starting session restore...');
+		
+		// Timeout de seguridad
+		const timeout = setTimeout(() => {
+			console.log('Session restore timeout - forcing complete');
+			isRestoring = false;
+		}, 5000);
+		
 		try {
 			await authStore.restoreSession();
+			console.log('Session restore completed');
 		} catch (error) {
 			console.error('Error restoring session:', error);
 		} finally {
+			clearTimeout(timeout);
 			isRestoring = false;
+			console.log('Restore process finished, isRestoring:', false);
 		}
 	});
 </script>
@@ -28,7 +36,7 @@
 			<p class="text-muted-foreground">Cargando...</p>
 		</div>
 	</div>
-{:else if usuario}
+{:else if $authStore}
 	<MainApp />
 {:else}
 	<LoginForm />

@@ -17,20 +17,27 @@ function createAuthStore() {
       api.setToken(null)
     },
     async restoreSession() {
-      const token = api.getToken()
+      console.log('Starting restoreSession...');
+      const token = api.getToken();
+      console.log('Token found:', !!token);
+      
       if (token) {
         try {
-          const usuario = await api.getMe()
-          set(usuario)
-          return usuario
+          console.log('Attempting to get user info...');
+          const usuario = await api.getMe();
+          console.log('User info retrieved:', usuario);
+          set(usuario);
+          return usuario;
         } catch (error) {
           // Token invalid or expired
-          api.setToken(null)
-          set(null)
-          return null
+          console.log('Token validation failed:', error);
+          api.setToken(null);
+          set(null);
+          return null;
         }
       }
-      return null
+      console.log('No token found, skipping restore');
+      return null;
     },
   }
 }

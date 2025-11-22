@@ -32,7 +32,7 @@ npm run dev
 npm run dev -- --open
 \`\`\`
 
-La aplicación estará disponible en `http://localhost:5173`
+La aplicación estará disponible en `http://localhost:5174`
 
 ## 🔌 Integración con API
 
