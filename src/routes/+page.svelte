@@ -10,8 +10,13 @@
 	authStore.subscribe((u) => (usuario = u));
 
 	onMount(async () => {
-		await authStore.restoreSession();
-		isRestoring = false;
+		try {
+			await authStore.restoreSession();
+		} catch (error) {
+			console.error('Error restoring session:', error);
+		} finally {
+			isRestoring = false;
+		}
 	});
 </script>
 
